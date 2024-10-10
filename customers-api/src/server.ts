@@ -77,7 +77,7 @@ app.put("/customers/:id", async (req, res) =>{
     });
 
     if (customer == null) {
-        return res.status(404).json();
+        return res.status(404).json({msg: "Not found."});
     }
 
     const customerUpdated = await prisma.customers.update({
