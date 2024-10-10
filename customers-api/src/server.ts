@@ -23,7 +23,7 @@ const prisma = new PrismaClient();
 
 app.get("/customers", async(req, res) => {
     const customers = await prisma.customers.findMany();
-    res.json(customers);
+    return res.json(customers);
     //res.send("Requisão GET ");
 });
 app.get("/customers/:id", async(req, res) => {
@@ -31,13 +31,19 @@ app.get("/customers/:id", async(req, res) => {
     const customer = await prisma.customers.findUnique({
         where: {id}
     });
-    res.json(customer);
+    if(customer ==null){
+       return res.status(404).json(); 
+    }
+    return res.json(customer);
     
     //res.send("Requisão GET id " + id);
 });
 
 app.post("/customers", async(req, res) => {
-  const { name, email, document } = req.body;
+  const {name, email, document} = req.body;
+  console.log("Name",name);
+  console.log("email",email);
+  console.log("document",document);
   const customers = await prisma.customers.create({
     data: {
         name,
@@ -45,7 +51,7 @@ app.post("/customers", async(req, res) => {
         document
     }
   });
-  res.json(customers);
+  return res.json(customers);
   //res.send(`Requisão POST Name ${name} email ${email} document ${document}`);
 });
 app.delete("/customers/:id", async (req, res) => {
