@@ -22,12 +22,19 @@ const prisma = new PrismaClient();
 // GET POST PUT DELETE
 
 app.get("/customers", async(req, res) => {
-    const customers = await prisma.customers.findMany();
-    return res.json(customers);
+    try{
+        const customers = await prisma.customers.findMany();
+        return res.json(customers);
     //res.send("Requisão GET ");
+    }catch(error){
+        console.log(error);
+        return res.status(500).json({error: error});
+    }
+    
 });
 app.get("/customers/:id", async(req, res) => {
-    const id = req.params.id;
+    try{
+        const id = req.params.id;
     const customer = await prisma.customers.findUnique({
         where: {id}
     });
@@ -37,10 +44,16 @@ app.get("/customers/:id", async(req, res) => {
     return res.json(customer);
     
     //res.send("Requisão GET id " + id);
+    } catch(error){
+        console.log(error);
+        return res.status(500).json({error: error}); 
+    }
+    
 });
 
 app.post("/customers", async(req, res) => {
-  const {name, email, document} = req.body;
+  try{
+    const {name, email, document} = req.body;
   console.log("Name",name);
   console.log("email",email);
   console.log("document",document);
@@ -53,12 +66,17 @@ app.post("/customers", async(req, res) => {
   });
   return res.json(customers);
   //res.send(`Requisão POST Name ${name} email ${email} document ${document}`);
+  } catch(error){
+    console.log(error);
+    return res.status(500).json({error: error}); 
+  }
 });
 app.delete("/customers/:id", async (req, res) => {
-    const id = req.params.id;
-    const customer = await prisma.customers.findUnique({
+    try{
+        const id = req.params.id;
+        const customer = await prisma.customers.findUnique({
         where: {id}
-    });
+        });
   
     if (customer == null) {
         return res.status(404).json();
@@ -67,8 +85,13 @@ app.delete("/customers/:id", async (req, res) => {
         where: {id}
     });
     return res.status(204).json();
+    } catch(error){
+        console.log(error);
+        return res.status(500).json({error: error}); 
+    }
 });
 app.put("/customers/:id", async (req, res) =>{
+    try{
     const id = req.params.id; 
     const {name, email, document} = req.body;
 
@@ -89,6 +112,11 @@ app.put("/customers/:id", async (req, res) =>{
         }
     });
     return res.json(customerUpdated);
+}catch(error){
+    console.log(error);
+    return res.status(500).json({error: error});
+}
+
 });
 
 
