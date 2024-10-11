@@ -20,7 +20,7 @@ router.delete("/customers/:id", customerController.verifyIfExist, customerContro
 
 router.put("/customers/:id", customerController.verifyIfExist, customerController.update)
 
-export { router }
+export { routes }
 
 const prisma = new PrismaClient();
 const routes = Router();
