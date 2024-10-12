@@ -7,7 +7,7 @@ const customerController = new CustomerController();
 
 router.get("/customers", customerController.findAll) ;
  
-router.get("/customers/:id", customerController.verifyIfExist, customerController.findById);
+router.get("/customers/:id", customerController.findById);
 
 router.post("/customers", customerController.create);
 
